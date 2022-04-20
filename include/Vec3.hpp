@@ -39,6 +39,10 @@ class Vec3 {
     return *this;
   }
 
+  bool operator==(const Vec3 &otherVector) {
+    return x==otherVector.x && y==otherVector.y && z==otherVector.z;
+  }
+
   //friend std::ostream &operator<<(std::ostream &out, const Vec3 &v);
 
   double lengthSq() const { return x*x + y*y + z*z; }
@@ -50,8 +54,4 @@ class Vec3 {
 
 inline std::ostream &operator<<(std::ostream &out, const Vec3 &v) {
   return out << v.x << ' ' << v.y << ' ' << v.z;
-}
-
-inline bool operator==(const Vec3 &v1, const Vec3 &v2) {
-  return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
 }
