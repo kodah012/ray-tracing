@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#include "vec3.hpp"
+
 int main() {
   const int imageWidth = 256;
   const int imageHeight = 256;
