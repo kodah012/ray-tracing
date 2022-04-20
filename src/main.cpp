@@ -14,6 +14,7 @@ int main() {
   
   int i = 0;
   for (int row = imageHeight - 1; row >= 0; row--) {
+    std::cout << "\rScanlines remaining: " << row << ' ' << std::flush;
     for (int col = 0; col < imageWidth; col++) {
       auto red = double(col) / (imageWidth - 1);
       auto green = double(row) / (imageHeight - 1);
@@ -26,5 +27,7 @@ int main() {
   }
 
   stbi_write_png("image.png", imageWidth, imageHeight, numChannels, pixels, imageWidth * numChannels);
+
+  std::cout << "\nDone.\n";
 }
 
