@@ -19,7 +19,7 @@ set_target_properties(gmock_main PROPERTIES FOLDER external)
 
 set(TEST_EXECUTABLE_NAME ray-tracing-test)
 set(TEST_FILES
-  ${PROJECT_SOURCE_DIR}/tests/Vec3Test.cpp
+  Vec3Test.cpp
 )
 
 add_executable(${TEST_EXECUTABLE_NAME} ${TEST_FILES})

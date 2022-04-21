@@ -7,24 +7,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-set(SOURCE_FILES
-  ${PROJECT_SOURCE_DIR}/src/Main.cpp
-  ${PROJECT_SOURCE_DIR}/src/Vec3.cpp
-)
+# Include directories containing header files
 set(INCLUDE
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_SOURCE_DIR}/external/stb
 )
 
-# Main executable
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE})
-
-# Main library for testing
+# Main library
 set(SOURCE_LIB_NAME source_lib)
-add_library(${SOURCE_LIB_NAME} ${SOURCE_FILES})
+add_library(${SOURCE_LIB_NAME})
 target_include_directories(${SOURCE_LIB_NAME} PUBLIC ${INCLUDE})
 
+# Main executable
+add_executable(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SOURCE_LIB_NAME})
+
 # Subdirectories
+add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 add_subdirectory(${PROJECT_SOURCE_DIR}/tests)
 
