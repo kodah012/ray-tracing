@@ -24,5 +24,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${SOURCE_LIB_NAME})
 
 # Subdirectories
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
-add_subdirectory(${PROJECT_SOURCE_DIR}/tests)
+
+# Tests
+set(BUILD_TESTS ON)
+if(BUILD_TESTS)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/tests)
+endif()
 
