@@ -1,14 +1,15 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
 #include <iostream>
+#include <filesystem>
 
 #include "Vec3.hpp"
 
-int main() {
+int main(int argc, char *argv[]) {
   const int imageWidth = 256;
   const int imageHeight = 256;
   const int numChannels = 3;
@@ -28,7 +29,8 @@ int main() {
     }
   }
 
-  stbi_write_png("image.png", imageWidth, imageHeight, numChannels, pixels, imageWidth * numChannels);
+  std::string outputDir = std::filesystem::current_path() / "image.png";
+  stbi_write_png(outputDir.c_str(), imageWidth, imageHeight, numChannels, pixels, imageWidth * numChannels);
 
   std::cout << "\nDone.\n";
 
