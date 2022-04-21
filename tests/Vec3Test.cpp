@@ -1,6 +1,16 @@
 #include <gtest/gtest.h>
 #include "Vec3.hpp"
 
+TEST(Vec3Test, DotProduct) {
+}
+
+TEST(Vec3Test, CrossProduct) {
+  Vec3 u{1, 2, 3};
+  Vec3 v{1, 5, 7};
+  Vec3 expected{-1, -4, 3};
+  EXPECT_EQ(u.cross(v), expected);
+}
+
 TEST(Vec3Test, EqualsOperator) {
   Vec3 v1{1, 2, 3};
   Vec3 v2{1, 2, 3};
@@ -29,6 +39,25 @@ TEST(Vec3Test, AddOperator) {
   Vec3 v2{1, 1, 1};
   Vec3 expected{2, 3, 4};
   EXPECT_EQ(v1 + v2, expected);
+}
+
+TEST(Vec3Test, SubtractOperator) {
+  Vec3 v1{1, 2, 3};
+  Vec3 expected{0, 1, 2};
+  EXPECT_EQ(v1 - Vec3(1, 1, 1), expected);
+}
+
+TEST(Vec3Test, MultiplyOperator) {
+  Vec3 v1{1, 2, 3};
+  Vec3 expected{2, 4, 6};
+  EXPECT_EQ(v1 * 2, expected);
+  EXPECT_EQ(2 * v1, expected);
+}
+
+TEST(Vec3Test, DivideOperator) {
+  Vec3 v1{1, 2, 3};
+  Vec3 expected{0.5, 1, 1.5};
+  EXPECT_EQ(v1 / 2, expected);
 }
 
 TEST(Vec3Test, AddAssignmentOperator) {
