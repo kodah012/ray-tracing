@@ -18,6 +18,23 @@ Vec3 Vec3::cross(const Vec3 &v) const {
   return Vec3{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x};
 }
 
+Vec3 Vec3::normalized() const {
+  Vec3 v = *this;
+  double length = v.length();
+
+  if (length == 0) {
+    return Vec3{0, 0, 0};
+  }
+  return v / length;
+}
+
+bool Vec3::approxEquals(const Vec3 &v, double error) const {
+  bool xApproxEqual = std::abs(x - v.x) <= error;
+  bool yApproxEqual = std::abs(y - v.y) <= error;
+  bool zApproxEqual = std::abs(z - v.z) <= error;
+  return xApproxEqual && yApproxEqual && zApproxEqual;
+}
+
 // ---------- OPERATOR OVERLOADS ----------
 
 // Unary negation
@@ -50,9 +67,9 @@ Vec3 operator/(const Vec3 &v, const double &scalar) {
 
 // Addition assignment
 Vec3 &operator+=(Vec3 &left, const Vec3 &right) {
-  left.x += right.x;
-  left.y += right.y;
-  left.z += right.z;
+  left.e[0] += right.x;
+  left.e[1] += right.y;
+  left.e[2] += right.z;
   return left;
 }
 
@@ -63,9 +80,9 @@ Vec3 &operator-=(Vec3 &left, const Vec3 &right) {
 
 // Scalar multiplication assignment
 Vec3 &operator*=(Vec3 &v, const double &scalar) {
-  v.x *= scalar;
-  v.y *= scalar;
-  v.z *= scalar;
+  v.e[0] *= scalar;
+  v.e[1] *= scalar;
+  v.e[2] *= scalar;
   return v;
 }
 

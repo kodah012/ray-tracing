@@ -33,7 +33,5 @@ int main(int argc, char *argv[]) {
   stbi_write_png(outputDir.c_str(), imageWidth, imageHeight, numChannels, pixels, imageWidth * numChannels);
 
   std::cout << "\nDone.\n";
-
-  std::cout << Vec3{1, 2, 3} << std::endl;
 }
 

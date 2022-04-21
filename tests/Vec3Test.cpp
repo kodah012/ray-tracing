@@ -1,6 +1,24 @@
 #include <gtest/gtest.h>
 #include "Vec3.hpp"
 
+TEST(Vec3Test, LengthSquared) {
+  Vec3 v1{0, 0, 0};
+  Vec3 v2{1, 1, 1};
+  Vec3 v3{1, 2, 3};
+  EXPECT_EQ(v1.lengthSq(), 0);
+  EXPECT_EQ(v2.lengthSq(), 3);
+  EXPECT_EQ(v3.lengthSq(), 14);
+}
+
+TEST(Vec3Test, Length) {
+  Vec3 v1{0, 0, 0};
+  Vec3 v2{1, 1, 1};
+  Vec3 v3{1, 2, 3};
+  EXPECT_EQ(v1.length(), 0);
+  EXPECT_NEAR(v2.length(), 1.732, 0.001);
+  EXPECT_NEAR(v3.length(), 3.742, 0.001);
+}
+
 TEST(Vec3Test, DotProduct) {
   Vec3 u{3, 5, 8};
   Vec3 v{2, 7, 1};
@@ -14,6 +32,32 @@ TEST(Vec3Test, CrossProduct) {
   Vec3 v{1, 5, 7};
   Vec3 expected{-1, -4, 3};
   EXPECT_EQ(u.cross(v), expected);
+}
+
+TEST(Vec3Test, NormalizedZeroVector) {
+  Vec3 v1{0, 0, 0};
+  EXPECT_EQ(v1.normalized(), Vec3(0, 0, 0));
+}
+
+TEST(Vec3Test, NormalizedUnitVector) {
+  Vec3 v1{0.5773502691896258, 0.5773502691896258, 0.5773502691896258};
+  EXPECT_EQ(v1.normalized(), v1);
+}
+
+TEST(Vec3Test, Normalized) {
+  Vec3 v1{1, 1, 1};
+  Vec3 expected{0.5773502691896258, 0.5773502691896258, 0.5773502691896258};
+  EXPECT_EQ(v1.normalized(), expected);
+}
+
+TEST(Vec3Test, ApproxEquals) {
+  Vec3 v1{1, 1, 1};
+  Vec3 v2{1.1, 1.1, 1.1};
+  Vec3 v3{0.9, 0.9, 0.9};
+  double error = 0.11;
+  EXPECT_TRUE(v1.approxEquals(v2, error));
+  EXPECT_TRUE(v1.approxEquals(v3, error));
+  EXPECT_TRUE(v1.approxEquals(v1));
 }
 
 TEST(Vec3Test, EqualsOperator) {
