@@ -1,5 +1,7 @@
 #include "Vec3.hpp"
 
+// ---------- VEC3 CLASS ----------
+
 Vec3::Vec3() : e{0, 0, 0} {}
 Vec3::Vec3(double x, double y, double z) : e{x, y, z} {}
 
@@ -16,6 +18,7 @@ Vec3 Vec3::cross(const Vec3 &v) const {
   return Vec3{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x};
 }
 
+// ---------- OPERATOR OVERLOADS ----------
 
 // Unary negation
 Vec3 operator-(const Vec3 &v) {

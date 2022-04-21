@@ -2,6 +2,11 @@
 #include "Vec3.hpp"
 
 TEST(Vec3Test, DotProduct) {
+  Vec3 u{3, 5, 8};
+  Vec3 v{2, 7, 1};
+  double expected = 49;
+  EXPECT_EQ(u.dot(v), expected);
+  EXPECT_EQ(v.dot(u), expected);
 }
 
 TEST(Vec3Test, CrossProduct) {
