@@ -5,6 +5,8 @@
 
 class Vec3 {
  public:
+  const static Vec3 ZERO;
+
   const double &x = e[0];
   const double &y = e[1];
   const double &z = e[2];

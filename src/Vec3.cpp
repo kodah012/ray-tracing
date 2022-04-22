@@ -2,6 +2,8 @@
 
 // ---------- VEC3 CLASS ----------
 
+const Vec3 Vec3::ZERO{0, 0, 0};
+
 Vec3::Vec3() : e{0, 0, 0} {}
 Vec3::Vec3(double x, double y, double z) : e{x, y, z} {}
 Vec3::Vec3(const Vec3 &v) : e{v.x, v.y, v.z} {}
@@ -23,10 +25,7 @@ Vec3 Vec3::normalized() const {
   Vec3 result = *this;
   double lengthSq = result.lengthSq();
 
-  if (lengthSq == 0) {
-    result = Vec3(0, 0, 0);
-  }
-  else if (lengthSq != 1) {
+  if (lengthSq != 0 && lengthSq != 1) {
     result /= sqrt(lengthSq);
   }
   return result;

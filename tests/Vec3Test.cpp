@@ -36,7 +36,7 @@ TEST(Vec3Test, CrossProduct) {
 
 TEST(Vec3Test, NormalizedZeroVector) {
   Vec3 v1{0, 0, 0};
-  EXPECT_EQ(v1.normalized(), Vec3(0, 0, 0));
+  EXPECT_EQ(v1.normalized(), Vec3::ZERO);
 }
 
 TEST(Vec3Test, NormalizedUnitVector) {
