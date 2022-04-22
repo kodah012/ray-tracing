@@ -17,7 +17,7 @@ class Vec3 {
   double dot(const Vec3 &v) const;
   Vec3 cross(const Vec3 &v) const;
   Vec3 normalized() const;
-  bool approxEquals(const Vec3 &v, double error = 0.001) const;
+  bool approxEquals(const Vec3 &v, double error = 0.0001) const;
 
  private:
   double e[3];

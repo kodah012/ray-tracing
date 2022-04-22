@@ -1,6 +1,7 @@
 set(MAIN_FILE Main.cpp)
 set(SOURCE_FILES
   Vec3.cpp
+  Ray.cpp
 )
 
 # Add Main.cpp to main executable
