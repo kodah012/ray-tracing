@@ -11,6 +11,7 @@ class Vec3 {
 
   Vec3();
   Vec3(double x, double y, double z);
+  Vec3(const Vec3 &v);
 
   double lengthSq() const;
   double length() const;
@@ -22,6 +23,7 @@ class Vec3 {
  private:
   double e[3];
 
+  Vec3 &operator=(const Vec3 &v);
   friend Vec3 &operator+=(Vec3 &left, const Vec3 &right);
   friend Vec3 &operator*=(Vec3 &v, const double &scalar);
 };

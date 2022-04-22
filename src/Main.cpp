@@ -8,6 +8,7 @@
 #include <filesystem>
 
 #include "Vec3.hpp"
+#include "Ray.hpp"
 
 int main(int argc, char *argv[]) {
   const int imageWidth = 256;

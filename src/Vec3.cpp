@@ -4,6 +4,7 @@
 
 Vec3::Vec3() : e{0, 0, 0} {}
 Vec3::Vec3(double x, double y, double z) : e{x, y, z} {}
+Vec3::Vec3(const Vec3 &v) : e{v.x, v.y, v.z} {}
 
 double Vec3::lengthSq() const {
   return x*x + y*y + z*z;
@@ -19,13 +20,16 @@ Vec3 Vec3::cross(const Vec3 &v) const {
 }
 
 Vec3 Vec3::normalized() const {
-  Vec3 v = *this;
-  double length = v.length();
+  Vec3 result = *this;
+  double lengthSq = result.lengthSq();
 
-  if (length == 0) {
-    return Vec3{0, 0, 0};
+  if (lengthSq == 0) {
+    result = Vec3(0, 0, 0);
   }
-  return v / length;
+  else if (lengthSq != 1) {
+    result /= sqrt(lengthSq);
+  }
+  return result;
 }
 
 bool Vec3::approxEquals(const Vec3 &v, double error) const {
@@ -36,6 +40,14 @@ bool Vec3::approxEquals(const Vec3 &v, double error) const {
 }
 
 // ---------- OPERATOR OVERLOADS ----------
+
+// Copy assignment
+Vec3 &Vec3::operator=(const Vec3 &v) {
+  e[0] = v.x;
+  e[1] = v.y;
+  e[2] = v.z;
+  return *this;
+}
 
 // Unary negation
 Vec3 operator-(const Vec3 &v) {
