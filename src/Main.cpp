@@ -9,6 +9,7 @@
 
 #include "Vec3.hpp"
 #include "Ray.hpp"
+#include "HittableList.hpp"
 
 double raySphereIntersection(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
   Vec3 sphereCenterToRayOrigin = r.origin - sphereCenter;
