@@ -5,7 +5,7 @@ set(SOURCE_FILES
 )
 
 # Add Main.cpp to main executable
-target_sources(${PROJECT_NAME} PRIVATE ${MAIN_FILE})
+target_sources(${MAIN_EXE_NAME} PRIVATE ${MAIN_FILE})
 
-# Add source files to main library
+# Add source files to source library
 target_sources(${SOURCE_LIB_NAME} PUBLIC ${SOURCE_FILES})

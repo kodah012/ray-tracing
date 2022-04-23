@@ -13,14 +13,15 @@ set(INCLUDE
   ${PROJECT_SOURCE_DIR}/external/stb
 )
 
-# Main library
-set(SOURCE_LIB_NAME source_lib)
+# Source library
+set(SOURCE_LIB_NAME main_lib)
 add_library(${SOURCE_LIB_NAME})
 target_include_directories(${SOURCE_LIB_NAME} PUBLIC ${INCLUDE})
 
 # Main executable
-add_executable(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SOURCE_LIB_NAME})
+set(MAIN_EXE_NAME ${PROJECT_NAME})
+add_executable(${MAIN_EXE_NAME})
+target_link_libraries(${MAIN_EXE_NAME} PRIVATE ${SOURCE_LIB_NAME})
 
 # Subdirectories
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
