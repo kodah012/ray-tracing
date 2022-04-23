@@ -10,7 +10,20 @@
 #include "Vec3.hpp"
 #include "Ray.hpp"
 
-Vec3 rayColor(const Ray &r) {
+bool rayHitsSphere(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
+  Vec3 sphereCenterToRayOrigin = r.origin - sphereCenter;
+  auto a = r.direction.dot(r.direction);
+  auto b = 2.0 * r.direction.dot(sphereCenterToRayOrigin);
+  auto c = sphereCenterToRayOrigin.dot(sphereCenterToRayOrigin) - sphereRadius*sphereRadius;
+  auto discriminant = b*b - 4*a*c;
+  return discriminant > 0;
+}
+
+Vec3 colorFromRay(const Ray &r) {
+  if (rayHitsSphere(Vec3{0, 0, -1}, 0.5, r)) {
+    return Vec3{1, 0, 0};
+  }
+
   const Vec3 white{1, 1, 1};
   const Vec3 blue{0.5, 0.7, 1};
 
@@ -19,6 +32,7 @@ Vec3 rayColor(const Ray &r) {
 
   return white.lerp(blue, t);
 }
+
 
 int main(int argc, char *argv[]) {
   // Image
@@ -51,7 +65,7 @@ int main(int argc, char *argv[]) {
         camOrigin,
         viewportLowerLeftCorner + u*viewportHorizontal + v*viewportVertical - camOrigin
       };
-      Vec3 color = rayColor(r);
+      Vec3 color = colorFromRay(r);
 
       pixels[i++] = static_cast<unsigned char>(255.0 * color.r);
       pixels[i++] = static_cast<unsigned char>(255.0 * color.g);
