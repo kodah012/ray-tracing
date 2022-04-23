@@ -11,7 +11,11 @@ class Sphere : public Hittable {
   Sphere();
   Sphere(Vec3 center, double radius);
 
-  virtual bool wasHit(const Ray &r, double tMin, double tMax, HitRecord record) const override;
+  virtual bool wasHit(
+    const Ray &r,
+    const double tMin, const double tMax,
+    HitRecord &record
+  ) const override;
 
  private:
   Vec3 cen;

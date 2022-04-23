@@ -3,7 +3,7 @@
 Sphere::Sphere() = default;
 Sphere::Sphere(Vec3 center, double radius) : cen{center}, rad{radius} {}
 
-bool Sphere::wasHit(const Ray &r, double tMin, double tMax, HitRecord record) const {
+bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecord &record) const {
   Vec3 centerToRayOrigin = r.origin - center;
   auto a = r.direction.lengthSq();
   auto bHalved = centerToRayOrigin.dot(r.direction);
@@ -25,9 +25,9 @@ bool Sphere::wasHit(const Ray &r, double tMin, double tMax, HitRecord record) co
     }
   }
 
-  record.t = root;
-  record.point = r.lerp(record.t);
-  record.normal = (record.point - center) / radius;
+  const auto &rayProgress = root;
+  const Vec3 outwardNormal = (record.hitPoint - center) / radius;
+  record = HitRecord{r.lerp(rayProgress), rayProgress, r, outwardNormal};
   
   return true;
 }
