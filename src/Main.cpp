@@ -10,25 +10,33 @@
 #include "Vec3.hpp"
 #include "Ray.hpp"
 
-bool rayHitsSphere(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
+double raySphereIntersection(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
   Vec3 sphereCenterToRayOrigin = r.origin - sphereCenter;
   auto a = r.direction.dot(r.direction);
   auto b = 2.0 * r.direction.dot(sphereCenterToRayOrigin);
   auto c = sphereCenterToRayOrigin.dot(sphereCenterToRayOrigin) - sphereRadius*sphereRadius;
   auto discriminant = b*b - 4*a*c;
-  return discriminant > 0;
+
+  if (discriminant >= 0) {
+    return (-b - sqrt(discriminant)) / (2*a);
+  }
+  return discriminant;
 }
 
 Vec3 colorFromRay(const Ray &r) {
-  if (rayHitsSphere(Vec3{0, 0, -1}, 0.5, r)) {
-    return Vec3{1, 0, 0};
+  Vec3 sphereCenter{0, 0, -1};
+  auto sphereRadius = 0.5;
+
+  auto t = raySphereIntersection(sphereCenter, sphereRadius, r);
+  if (t > 0) {
+    Vec3 normal = (r.lerp(t) - sphereCenter).normalized();
+    return 0.5 * Vec3{normal.x+1, normal.y+1, normal.z+1};
   }
 
   const Vec3 white{1, 1, 1};
   const Vec3 blue{0.5, 0.7, 1};
-
   Vec3 unitDirection = r.direction.normalized();
-  auto t = 0.5 * (unitDirection.y + 1.0);
+  t = 0.5 * (unitDirection.y + 1.0);
 
   return white.lerp(blue, t);
 }
