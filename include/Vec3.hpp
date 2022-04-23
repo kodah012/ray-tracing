@@ -31,10 +31,11 @@ class Vec3 {
   Vec3 lerp(const Vec3 &target, const double t) const;
   bool approxEquals(const Vec3 &v, double error = 0.0001) const;
 
+  Vec3 &operator=(const Vec3 &v);
+
  private:
   double e[3];
 
-  Vec3 &operator=(const Vec3 &v);
   friend Vec3 &operator+=(Vec3 &left, const Vec3 &right);
   friend Vec3 &operator*=(Vec3 &v, const double &scalar);
 };
