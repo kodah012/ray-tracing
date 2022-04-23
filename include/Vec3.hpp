@@ -11,6 +11,14 @@ class Vec3 {
   const double &y = e[1];
   const double &z = e[2];
 
+  const double &r = x;
+  const double &g = y;
+  const double &b = z;
+
+  const double &u = x;
+  const double &v = y;
+  const double &w = z;
+
   Vec3();
   Vec3(double x, double y, double z);
   Vec3(const Vec3 &v);
@@ -20,6 +28,7 @@ class Vec3 {
   double dot(const Vec3 &v) const;
   Vec3 cross(const Vec3 &v) const;
   Vec3 normalized() const;
+  Vec3 lerp(const Vec3 &target, const double t) const;
   bool approxEquals(const Vec3 &v, double error = 0.0001) const;
 
  private:

@@ -31,6 +31,10 @@ Vec3 Vec3::normalized() const {
   return result;
 }
 
+Vec3 Vec3::lerp(const Vec3 &target, const double t) const {
+  return (1 - t)*(*this) + t*target;
+}
+
 bool Vec3::approxEquals(const Vec3 &v, double error) const {
   bool xApproxEqual = std::abs(x - v.x) <= error;
   bool yApproxEqual = std::abs(y - v.y) <= error;
