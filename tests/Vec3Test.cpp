@@ -50,6 +50,41 @@ TEST(Vec3Test, Normalized) {
   EXPECT_EQ(v1.normalized(), expected);
 }
 
+TEST(Vec3Test, LerpSameVector) {
+  Vec3 v1{1, 2, 3};
+  EXPECT_EQ(v1.lerp(v1, 0.123), v1);
+}
+
+TEST(Vec3Test, LerpZero) {
+  Vec3 v1{1, 2, 3};
+  Vec3 v2{4, 5, 6};
+  EXPECT_EQ(v1.lerp(v2, 0), v1);
+}
+
+TEST(Vec3Test, LerpOne) {
+  Vec3 v1{1, 2, 3};
+  Vec3 v2{4, 5, 6};
+  EXPECT_EQ(v1.lerp(v2, 1), v2);
+}
+
+TEST(Vec3Test, LerpHalfway) {
+  Vec3 v1{1, 1, 1};
+  Vec3 v2{3, 3, 3};
+  EXPECT_EQ(v1.lerp(v2, 0.5), Vec3(2, 2, 2));
+}
+
+TEST(Vec3Test, LerpBelowZero) {
+  Vec3 v1{0, 0, 0};
+  Vec3 v2{1, 1, 1};
+  EXPECT_EQ(v1.lerp(v2, -0.5), Vec3(-0.5, -0.5, -0.5));
+}
+
+TEST(Vec3Test, LerpAboveOne) {
+  Vec3 v1{0, 0, 0};
+  Vec3 v2{1, 1, 1};
+  EXPECT_EQ(v1.lerp(v2, 1.5), Vec3(1.5, 1.5, 1.5));
+}
+
 TEST(Vec3Test, ApproxEquals) {
   Vec3 v1{1, 1, 1};
   Vec3 v2{1.1, 1.1, 1.1};
