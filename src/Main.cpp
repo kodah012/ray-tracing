@@ -12,13 +12,13 @@
 
 double raySphereIntersection(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
   Vec3 sphereCenterToRayOrigin = r.origin - sphereCenter;
-  auto a = r.direction.dot(r.direction);
-  auto b = 2.0 * r.direction.dot(sphereCenterToRayOrigin);
-  auto c = sphereCenterToRayOrigin.dot(sphereCenterToRayOrigin) - sphereRadius*sphereRadius;
-  auto discriminant = b*b - 4*a*c;
+  auto a = r.direction.lengthSq();
+  auto bHalved = sphereCenterToRayOrigin.dot(r.direction);
+  auto c = sphereCenterToRayOrigin.lengthSq() - sphereRadius*sphereRadius;
+  auto discriminant = bHalved*bHalved - a*c;
 
   if (discriminant >= 0) {
-    return (-b - sqrt(discriminant)) / (2*a);
+    return (-bHalved - sqrt(discriminant)) / a;
   }
   return discriminant;
 }
