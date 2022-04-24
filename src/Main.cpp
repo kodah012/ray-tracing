@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
       Vec3 pixelColor = Vec3::ZERO;
 
       for (int sample = 0; sample < samplesPerPixel; sample++) {
-        auto u = (col + Math::randomDouble()) / (imageWidth - 1);
-        auto v = (row + Math::randomDouble()) / (imageHeight - 1);
+        auto u = (col + Math::randomDouble()) / (imageWidth - 1.0);
+        auto v = (row + Math::randomDouble()) / (imageHeight - 1.0);
         Ray r = cam.rayFromViewportPoint(u, v);
         pixelColor += colorFromRay(r, world);
       }

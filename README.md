@@ -1,6 +1,10 @@
 # Ray Tracing
 
-## Getting Started
+### Example Render
+
+![Example Render](image.png "Example Render")
+
+### Getting Started
 
 Initialize project: ```./scripts/init```
 
