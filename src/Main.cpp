@@ -16,15 +16,21 @@
 #include <iostream>
 #include <filesystem>
 
-Vec3 colorFromRay(const Ray &r, const Hittable &world) {
-  Vec3 white{1, 1, 1};
-  Vec3 blue{0.5, 0.7, 1};
+Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
+  // If exceeded ray bounce limit, no more light is gathered
+  if (depth <= 0) {
+    Vec3 black{0, 0, 0};
+    return black;
+  }
 
   HitRecord record = world.raycast(r, 0, Math::infinity);
   if (record.hitAnything) {
-    return 0.5 * (record.faceNormal + Vec3{1, 1, 1});
+    Vec3 target = record.hitPoint + record.faceNormal + Vec3::randomInsideUnitSphere();
+    return 0.5 * colorFromRay(Ray{record.hitPoint, target - record.hitPoint}, world, depth-1);
   }
 
+  Vec3 white{1, 1, 1};
+  Vec3 blue{0.5, 0.7, 1};
   auto unitDirection = r.direction.normalized();
   auto t = 0.5 * (unitDirection.y + 1);
   return (1-t)*white + t*blue;
@@ -38,6 +44,7 @@ int main(int argc, char *argv[]) {
   const int imageHeight = static_cast<int>(imageWidth / aspectRatio);
   const int numChannels = 3;
   const int samplesPerPixel = 100;
+  const int maxDepth = 50;
   unsigned char pixels[imageWidth * imageHeight * numChannels];
 
   // World
@@ -60,7 +67,7 @@ int main(int argc, char *argv[]) {
         auto u = (col + Math::randomDouble()) / (imageWidth - 1.0);
         auto v = (row + Math::randomDouble()) / (imageHeight - 1.0);
         Ray r = cam.rayFromViewportPoint(u, v);
-        pixelColor += colorFromRay(r, world);
+        pixelColor += colorFromRay(r, world, maxDepth);
       }
 
       pixelColor /= samplesPerPixel;

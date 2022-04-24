@@ -23,6 +23,10 @@ class Vec3 {
   Vec3(double x, double y, double z);
   Vec3(const Vec3 &v);
 
+  static Vec3 random();
+  static Vec3 random(const double min, const double max);
+  static Vec3 randomInsideUnitSphere();
+
   double lengthSq() const;
   double length() const;
   double dot(const Vec3 &v) const;

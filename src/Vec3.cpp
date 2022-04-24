@@ -1,4 +1,5 @@
 #include "Vec3.hpp"
+#include "Utils.hpp"
 
 // ---------- VEC3 CLASS ----------
 
@@ -7,6 +8,27 @@ const Vec3 Vec3::ZERO{0, 0, 0};
 Vec3::Vec3() : e{0, 0, 0} {}
 Vec3::Vec3(double x, double y, double z) : e{x, y, z} {}
 Vec3::Vec3(const Vec3 &v) : e{v.x, v.y, v.z} {}
+
+
+Vec3 Vec3::random() {
+  return Vec3{Math::randomDouble(), Math::randomDouble(), Math::randomDouble()};
+}
+Vec3 Vec3::random(const double min, const double max) {
+  return Vec3{
+    Math::randomDouble(min, max),
+    Math::randomDouble(min, max),
+    Math::randomDouble(min, max)
+  };
+}
+Vec3 Vec3::randomInsideUnitSphere() {
+  while (true) {
+    auto point = Vec3::random(-1, 1);
+    if (point.lengthSq() < 1) {
+      return point;
+    }
+  }
+}
+
 
 double Vec3::lengthSq() const {
   return x*x + y*y + z*z;
