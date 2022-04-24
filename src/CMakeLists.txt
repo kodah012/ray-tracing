@@ -1,7 +1,10 @@
 set(MAIN_FILE Main.cpp)
 set(SOURCE_FILES
-  Vec3.cpp
+  HitRecord.cpp
+  HittableList.cpp
   Ray.cpp
+  Sphere.cpp
+  Vec3.cpp
 )
 
 # Add Main.cpp to main executable

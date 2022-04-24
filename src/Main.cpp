@@ -1,45 +1,33 @@
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "stb_image.h"
 
+#include <memory>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+
+#include "Vec3.hpp"
+#include "Ray.hpp"
+#include "Hittable.hpp"
+#include "HittableList.hpp"
+#include "Utils.hpp"
+#include "Sphere.hpp"
 
 #include <iostream>
 #include <filesystem>
 
-#include "Vec3.hpp"
-#include "Ray.hpp"
-#include "HittableList.hpp"
+Vec3 colorFromRay(const Ray &r, const Hittable &world) {
+  Vec3 white{1, 1, 1};
+  Vec3 blue{0.5, 0.7, 1};
 
-double raySphereIntersection(const Vec3 &sphereCenter, double sphereRadius, const Ray &r) {
-  Vec3 sphereCenterToRayOrigin = r.origin - sphereCenter;
-  auto a = r.direction.lengthSq();
-  auto bHalved = sphereCenterToRayOrigin.dot(r.direction);
-  auto c = sphereCenterToRayOrigin.lengthSq() - sphereRadius*sphereRadius;
-  auto discriminant = bHalved*bHalved - a*c;
-
-  if (discriminant >= 0) {
-    return (-bHalved - sqrt(discriminant)) / a;
-  }
-  return discriminant;
-}
-
-Vec3 colorFromRay(const Ray &r) {
-  Vec3 sphereCenter{0, 0, -1};
-  auto sphereRadius = 0.5;
-
-  auto t = raySphereIntersection(sphereCenter, sphereRadius, r);
-  if (t > 0) {
-    Vec3 normal = (r.lerp(t) - sphereCenter).normalized();
-    return 0.5 * Vec3{normal.x+1, normal.y+1, normal.z+1};
+  // For some reason, record.faceNormal is constant (does not change based on sphere surface)
+  HitRecord record;
+  if (world.wasHit(r, 0, Math::infinity, record)) {
+    return 0.5 * (record.faceNormal + Vec3{1, 1, 1});
   }
 
-  const Vec3 white{1, 1, 1};
-  const Vec3 blue{0.5, 0.7, 1};
-  Vec3 unitDirection = r.direction.normalized();
-  t = 0.5 * (unitDirection.y + 1.0);
-
-  return white.lerp(blue, t);
+  auto unitDirection = r.direction.normalized();
+  auto t = 0.5 * (unitDirection.y + 1);
+  return (1-t)*white + t*blue;
 }
 
 
@@ -50,6 +38,11 @@ int main(int argc, char *argv[]) {
   const int imageHeight = static_cast<int>(imageWidth / aspectRatio);
   const int numChannels = 3;
   unsigned char pixels[imageWidth * imageHeight * numChannels];
+
+  // World
+  HittableList world;
+  world.add(std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5));
+  //world.add(std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100));
 
   // Camera
   auto viewportHeight = 2.0;
@@ -72,9 +65,9 @@ int main(int argc, char *argv[]) {
 
       Ray r{
         camOrigin,
-        viewportLowerLeftCorner + u*viewportHorizontal + v*viewportVertical - camOrigin
+        viewportLowerLeftCorner + u*viewportHorizontal + v*viewportVertical
       };
-      Vec3 color = colorFromRay(r);
+      Vec3 color = colorFromRay(r, world);
 
       pixels[i++] = static_cast<unsigned char>(255.0 * color.r);
       pixels[i++] = static_cast<unsigned char>(255.0 * color.g);

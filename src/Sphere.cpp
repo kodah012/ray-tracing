@@ -26,8 +26,9 @@ bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecor
   }
 
   const auto &rayProgress = root;
-  const Vec3 outwardNormal = (record.hitPoint - center) / radius;
-  record = HitRecord{r.lerp(rayProgress), rayProgress, r, outwardNormal};
+  const auto hitPoint = r.lerp(rayProgress);
+  const Vec3 outwardNormal = (hitPoint - center) / radius;
+  record = HitRecord{r, rayProgress, outwardNormal};
   
   return true;
 }

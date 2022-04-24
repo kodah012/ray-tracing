@@ -1,15 +1,11 @@
 #include "HitRecord.hpp"
 
 HitRecord::HitRecord() = default;
-HitRecord::HitRecord(
-  const Vec3 &hitPoint,
-  const double rayProgress,
-  const Ray &r,
-  const Vec3 &outwardNormal
-) {
-  point = hitPoint;
+HitRecord::HitRecord(const Ray &r, const double rayProgress, const Vec3 &outwardNormal) {
   t = rayProgress;
-  setFaceNormal(r, outwardNormal);
+  point = r.lerp(t);
+  frontFace = r.direction.dot(outwardNormal) < 0;
+  normal = frontFace ? outwardNormal : -outwardNormal;
 }
 
 HitRecord &HitRecord::operator=(const HitRecord &record) {
@@ -18,9 +14,4 @@ HitRecord &HitRecord::operator=(const HitRecord &record) {
   normal = record.faceNormal;
   frontFace = record.hitFrontFace;
   return *this;
-}
-
-void HitRecord::setFaceNormal(const Ray &r, const Vec3 &outwardNormal) {
-  frontFace = r.direction.dot(outwardNormal) < 0;
-  normal = frontFace ? outwardNormal : -outwardNormal;
 }

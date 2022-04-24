@@ -1,10 +1,15 @@
 #include "HittableList.hpp"
 
+HittableList::HittableList() = default;
+HittableList::HittableList(const std::shared_ptr<Hittable> object) {
+  add(object);
+}
+
 void HittableList::clear() {
   objects.clear();
 }
-void HittableList::add(const std::shared_ptr<Hittable> &object) {
-  objects.emplace_back(object);
+void HittableList::add(const std::shared_ptr<Hittable> object) {
+  objects.push_back(object);
 }
 
 bool HittableList::wasHit(

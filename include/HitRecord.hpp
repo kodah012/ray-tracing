@@ -11,12 +11,7 @@ class HitRecord {
   const bool &hitFrontFace = frontFace;
 
   HitRecord();
-  HitRecord(
-    const Vec3 &hitPoint,
-    const double rayProgress,
-    const Ray &r,
-    const Vec3 &outwardNormal
-  );
+  HitRecord(const Ray &r, const double rayProgress, const Vec3 &outwardNormal);
 
   HitRecord &operator=(const HitRecord &record);
 
@@ -25,6 +20,4 @@ class HitRecord {
   Vec3 normal;
   double t;
   bool frontFace;
-
-  void setFaceNormal(const Ray &r, const Vec3 &outwardNormal);
 };
