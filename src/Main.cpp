@@ -11,6 +11,7 @@
 #include "HittableList.hpp"
 #include "Utils.hpp"
 #include "Sphere.hpp"
+#include "Camera.hpp"
 
 #include <iostream>
 #include <filesystem>
@@ -36,6 +37,7 @@ int main(int argc, char *argv[]) {
   const int imageWidth = 400;
   const int imageHeight = static_cast<int>(imageWidth / aspectRatio);
   const int numChannels = 3;
+  const int samplesPerPixel = 100;
   unsigned char pixels[imageWidth * imageHeight * numChannels];
 
   // World
@@ -44,34 +46,28 @@ int main(int argc, char *argv[]) {
   world.add(std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100));
 
   // Camera
-  auto viewportHeight = 2.0;
-  auto viewportWidth = viewportHeight * aspectRatio;
-  auto viewportVertical = Vec3{0, viewportHeight, 0};
-  auto viewportHorizontal = Vec3{viewportWidth, 0, 0};
-  auto focalLength = 1.0;
-  auto camOrigin = Vec3::ZERO;
-  auto viewportLowerLeftCorner =
-    camOrigin -
-    viewportHorizontal/2 - viewportVertical/2 -
-    Vec3{0, 0, focalLength};
+  Camera cam;
   
   // Render
   int i = 0;
   for (int row = imageHeight - 1; row >= 0; row--) {
     std::cout << "\rScanlines remaining: " << row << ' ' << std::flush;
+
     for (int col = 0; col < imageWidth; col++) {
-      auto u = col / double(imageWidth - 1);
-      auto v = row / double(imageHeight - 1);
+      Vec3 pixelColor = Vec3::ZERO;
 
-      Ray r{
-        camOrigin,
-        viewportLowerLeftCorner + u*viewportHorizontal + v*viewportVertical
-      };
-      Vec3 color = colorFromRay(r, world);
+      for (int sample = 0; sample < samplesPerPixel; sample++) {
+        auto u = (col + Math::randomDouble()) / (imageWidth - 1);
+        auto v = (row + Math::randomDouble()) / (imageHeight - 1);
+        Ray r = cam.rayFromViewportPoint(u, v);
+        pixelColor += colorFromRay(r, world);
+      }
 
-      pixels[i++] = static_cast<unsigned char>(255.0 * color.r);
-      pixels[i++] = static_cast<unsigned char>(255.0 * color.g);
-      pixels[i++] = static_cast<unsigned char>(255.0 * color.b);
+      pixelColor /= samplesPerPixel;
+
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.r, 0, 1));
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.g, 0, 1));
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.b, 0, 1));
     }
   }
 
