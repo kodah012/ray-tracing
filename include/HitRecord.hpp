@@ -2,6 +2,9 @@
 
 #include "Vec3.hpp"
 #include "Ray.hpp"
+#include <memory>
+
+class Material;
 
 class HitRecord {
  public:
@@ -10,9 +13,12 @@ class HitRecord {
   const double &rayProgress = t;
   const bool &hitFrontFace = frontFace;
   const bool &hitAnything = hit;
+  const std::shared_ptr<Material> material;
 
   HitRecord();
-  HitRecord(const Ray &r, const double rayProgress, const Vec3 &outwardNormal);
+  HitRecord(
+    const Ray &r, const double rayProgress, const Vec3 &outwardNormal, std::shared_ptr<Material> material
+  );
 
   HitRecord &operator=(const HitRecord &record);
 
@@ -22,4 +28,5 @@ class HitRecord {
   double t;
   bool frontFace;
   bool hit = false;
+  std::shared_ptr<Material> mat;
 };

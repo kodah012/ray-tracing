@@ -12,6 +12,8 @@ class Ray {
 
   Vec3 lerp(double t) const;
  
+  Ray &operator=(const Ray &r);
+
  private:
   Vec3 orig;
   Vec3 dir;

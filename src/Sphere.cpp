@@ -1,7 +1,9 @@
 #include "Sphere.hpp"
+#include <memory>
 
 Sphere::Sphere() = default;
-Sphere::Sphere(Vec3 center, double radius) : cen{center}, rad{radius} {}
+Sphere::Sphere(Vec3 center, double radius, std::shared_ptr<Material> material)
+  : cen{center}, rad{radius}, mat{material} {}
 
 HitRecord Sphere::raycast(const Ray &r, const double tMin, const double tMax) const {
   HitRecord record;
@@ -30,7 +32,7 @@ HitRecord Sphere::raycast(const Ray &r, const double tMin, const double tMax) co
   const auto &rayProgress = root;
   const auto hitPoint = r.lerp(rayProgress);
   const Vec3 outwardNormal = (hitPoint - center) / radius;
-  record = HitRecord{r, rayProgress, outwardNormal};
+  record = HitRecord{r, rayProgress, outwardNormal, material};
   
   return record;
 }
