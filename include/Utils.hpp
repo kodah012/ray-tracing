@@ -10,7 +10,7 @@ namespace Math {
   const double infinity = std::numeric_limits<double>::infinity();
   const double pi = M_PI;
 
-  inline double degreesToRadians(double degrees) {
+  inline double degreesToRadians(const double degrees) {
     return degrees * pi / 180.0;
   }
 
@@ -22,8 +22,12 @@ namespace Math {
   }
 
   // Returns a random real number in [min, max)
-  inline double randomDouble(double min, double max) {
+  inline double randomDouble(const double min, const double max) {
     return min + (max - min) * randomDouble();
+  }
+
+  inline double clamp(const double x, const double min, const double max) {
+    return std::clamp(x, min, max);
   }
 
 }
