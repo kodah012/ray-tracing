@@ -69,6 +69,11 @@ Vec3 Vec3::lerp(const Vec3 &target, const double t) const {
   return start + (target - start) * t;
 }
 
+Vec3 Vec3::reflected(const Vec3 &normal) const {
+  auto &v = *this;
+  return v - 2*v.dot(normal)*normal;
+}
+
 bool Vec3::approxEquals(const Vec3 &v, double error) const {
   bool xApproxEqual = std::abs(x - v.x) <= error;
   bool yApproxEqual = std::abs(y - v.y) <= error;
