@@ -66,15 +66,23 @@ int main(int argc, char *argv[]) {
       for (int sample = 0; sample < samplesPerPixel; sample++) {
         auto u = (col + Math::randomDouble()) / (imageWidth - 1.0);
         auto v = (row + Math::randomDouble()) / (imageHeight - 1.0);
-        Ray r = cam.rayFromViewportPoint(u, v);
-        pixelColor += colorFromRay(r, world, maxDepth);
+        Ray ray = cam.rayFromViewportPoint(u, v);
+        pixelColor += colorFromRay(ray, world, maxDepth);
       }
+      auto r = pixelColor.r;
+      auto g = pixelColor.g;
+      auto b = pixelColor.b;
 
-      pixelColor /= samplesPerPixel;
+      // Divide the color by the number of samples and gamma-correct for gamma=2.0
+      auto scale = 1.0 / samplesPerPixel;
+      r = sqrt(scale * r);
+      g = sqrt(scale * g);
+      b = sqrt(scale * b);
 
-      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.r, 0, 1));
-      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.g, 0, 1));
-      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(pixelColor.b, 0, 1));
+      // Write the translated [0, 255] value of each color component
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(r, 0, 1));
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(g, 0, 1));
+      pixels[i++] = static_cast<unsigned char>(255.0 * Math::clamp(b, 0, 1));
     }
   }
 
