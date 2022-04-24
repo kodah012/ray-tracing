@@ -13,9 +13,7 @@ class HittableList : public Hittable {
   void clear();
   void add(const std::shared_ptr<Hittable> object);
 
-  virtual bool wasHit(
-    const Ray &r, const double tMin, const double tMax, HitRecord &record
-  ) const override;
+  virtual HitRecord raycast(const Ray &r, const double tMin, const double tMax) const override;
  
  private:
   std::vector<std::shared_ptr<Hittable>> objects;

@@ -12,20 +12,16 @@ void HittableList::add(const std::shared_ptr<Hittable> object) {
   objects.push_back(object);
 }
 
-bool HittableList::wasHit(
-  const Ray &r, const double tMin, const double tMax, HitRecord &record
-) const {
-  HitRecord tempRecord;
-  bool hitAnything = false;
+HitRecord HittableList::raycast(const Ray &r, const double tMin, const double tMax) const {
+  HitRecord record;
   auto tClosest = tMax;
 
   for (const auto &object : objects) {
-    if (object->wasHit(r, tMin, tClosest, tempRecord)) {
-      hitAnything = true;
-      tClosest = tempRecord.rayProgress;
-      record = tempRecord;
+    record = object->raycast(r, tMin, tClosest);
+    if (record.hitAnything) {
+      tClosest = record.rayProgress;
     }
   }
 
-  return hitAnything;
+  return record;
 }

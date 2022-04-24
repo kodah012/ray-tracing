@@ -3,7 +3,9 @@
 Sphere::Sphere() = default;
 Sphere::Sphere(Vec3 center, double radius) : cen{center}, rad{radius} {}
 
-bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecord &record) const {
+HitRecord Sphere::raycast(const Ray &r, const double tMin, const double tMax) const {
+  HitRecord record;
+
   Vec3 centerToRayOrigin = r.origin - center;
   auto a = r.direction.lengthSq();
   auto bHalved = centerToRayOrigin.dot(r.direction);
@@ -12,7 +14,7 @@ bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecor
   // Check if root exists
   auto discriminant = bHalved*bHalved - a*c;
   if (discriminant < 0) {
-    return false;
+    return record;
   }
 
   // Find the nearest root that lies in acceptable range
@@ -21,7 +23,7 @@ bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecor
   if (root < tMin || root > tMax) {
     root = (-bHalved + sqrtDiscriminant) / a;
     if (root < tMin || root > tMax) {
-      return false;
+      return record;
     }
   }
 
@@ -30,5 +32,5 @@ bool Sphere::wasHit(const Ray &r, const double tMin, const double tMax, HitRecor
   const Vec3 outwardNormal = (hitPoint - center) / radius;
   record = HitRecord{r, rayProgress, outwardNormal};
   
-  return true;
+  return record;
 }

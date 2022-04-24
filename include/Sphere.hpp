@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Hittable.hpp"
 #include "Vec3.hpp"
+#include "Hittable.hpp"
 
 class Sphere : public Hittable {
  public:
@@ -11,11 +11,7 @@ class Sphere : public Hittable {
   Sphere();
   Sphere(Vec3 center, double radius);
 
-  virtual bool wasHit(
-    const Ray &r,
-    const double tMin, const double tMax,
-    HitRecord &record
-  ) const override;
+  virtual HitRecord raycast(const Ray &r, const double tMin, const double tMax) const override;
 
  private:
   Vec3 cen;

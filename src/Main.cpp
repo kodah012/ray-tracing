@@ -19,9 +19,8 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world) {
   Vec3 white{1, 1, 1};
   Vec3 blue{0.5, 0.7, 1};
 
-  // For some reason, record.faceNormal is constant (does not change based on sphere surface)
-  HitRecord record;
-  if (world.wasHit(r, 0, Math::infinity, record)) {
+  HitRecord record = world.raycast(r, 0, Math::infinity);
+  if (record.hitAnything) {
     return 0.5 * (record.faceNormal + Vec3{1, 1, 1});
   }
 
