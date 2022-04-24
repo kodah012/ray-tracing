@@ -28,6 +28,14 @@ Vec3 Vec3::randomInsideUnitSphere() {
     }
   }
 }
+Vec3 Vec3::randomInsideUnitHemisphere(const Vec3 &normal) {
+  Vec3 insideUnitSphere = randomInsideUnitSphere();
+  if (insideUnitSphere.dot(normal) < 0) {
+    // Outside hemisphere that normal vector is pointing toward, so reverse the random vector
+    insideUnitSphere *= -1;
+  }
+  return insideUnitSphere;
+}
 Vec3 Vec3::randomUnitVector() {
   return randomInsideUnitSphere().normalized();
 }

@@ -26,6 +26,7 @@ class Vec3 {
   static Vec3 random();
   static Vec3 random(const double min, const double max);
   static Vec3 randomInsideUnitSphere();
+  static Vec3 randomInsideUnitHemisphere(const Vec3 &normal);
   static Vec3 randomUnitVector();
 
   double lengthSq() const;
