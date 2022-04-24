@@ -1,5 +1,6 @@
 set(MAIN_FILE Main.cpp)
 set(SOURCE_FILES
+  Camera.cpp
   HitRecord.cpp
   HittableList.cpp
   Ray.cpp
