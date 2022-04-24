@@ -25,7 +25,7 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
 
   HitRecord record = world.raycast(r, 0.001, Math::infinity);
   if (record.hitAnything) {
-    Vec3 target = record.hitPoint + record.faceNormal + Vec3::randomInsideUnitSphere();
+    Vec3 target = record.hitPoint + record.faceNormal + Vec3::randomUnitVector();
     return 0.5 * colorFromRay(Ray{record.hitPoint, target - record.hitPoint}, world, depth-1);
   }
 

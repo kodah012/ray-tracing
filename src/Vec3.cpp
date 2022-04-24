@@ -28,6 +28,9 @@ Vec3 Vec3::randomInsideUnitSphere() {
     }
   }
 }
+Vec3 Vec3::randomUnitVector() {
+  return randomInsideUnitSphere().normalized();
+}
 
 
 double Vec3::lengthSq() const {
