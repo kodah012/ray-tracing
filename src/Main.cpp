@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   // World
   HittableList world;
   world.add(std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5));
-  //world.add(std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100));
+  world.add(std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100));
 
   // Camera
   auto viewportHeight = 2.0;
@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     viewportHorizontal/2 - viewportVertical/2 -
     Vec3{0, 0, focalLength};
   
+  // Render
   int i = 0;
   for (int row = imageHeight - 1; row >= 0; row--) {
     std::cout << "\rScanlines remaining: " << row << ' ' << std::flush;

@@ -17,9 +17,10 @@ HitRecord HittableList::raycast(const Ray &r, const double tMin, const double tM
   auto tClosest = tMax;
 
   for (const auto &object : objects) {
-    record = object->raycast(r, tMin, tClosest);
-    if (record.hitAnything) {
-      tClosest = record.rayProgress;
+    HitRecord tempRecord = object->raycast(r, tMin, tClosest);
+    if (tempRecord.hitAnything) {
+      tClosest = tempRecord.rayProgress;
+      record = tempRecord;
     }
   }
 
