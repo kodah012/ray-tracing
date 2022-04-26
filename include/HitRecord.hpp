@@ -13,7 +13,7 @@ class HitRecord {
   const double &rayProgress = t;
   const bool &hitFrontFace = frontFace;
   const bool &hitAnything = hit;
-  const std::shared_ptr<Material> material;
+  const std::shared_ptr<Material> &material = mat;
 
   HitRecord();
   HitRecord(
