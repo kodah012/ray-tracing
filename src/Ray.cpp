@@ -13,4 +13,5 @@ Vec3 Ray::lerp(double t) const {
 Ray &Ray::operator=(const Ray &r) {
   orig = r.origin;
   dir = r.direction;
+  return *this;
 }
