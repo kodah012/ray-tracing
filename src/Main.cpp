@@ -12,6 +12,9 @@
 #include "Utils.hpp"
 #include "Sphere.hpp"
 #include "Camera.hpp"
+#include "materials/Material.hpp"
+#include "materials/Lambertian.hpp"
+#include "materials/Metal.hpp"
 
 #include <iostream>
 #include <filesystem>
@@ -25,8 +28,17 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
 
   HitRecord record = world.raycast(r, 0.001, Math::infinity);
   if (record.hitAnything) {
-    Vec3 target = record.hitPoint + record.faceNormal + Vec3::randomInsideUnitHemisphere(record.faceNormal);
-    return 0.5 * colorFromRay(Ray{record.hitPoint, target - record.hitPoint}, world, depth-1);
+    Ray scattered;
+    Vec3 attenuation;
+    if (record.material->scatter(r, record, attenuation, scattered)) {
+      Vec3 colorResult = colorFromRay(scattered, world, depth - 1);
+      return Vec3{
+        attenuation.x * colorResult.x,
+        attenuation.y * colorResult.y,
+        attenuation.z * colorResult.z
+      };
+    }
+    return Vec3::ZERO;
   }
 
   Vec3 white{1, 1, 1};
@@ -36,6 +48,26 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
   return (1-t)*white + t*blue;
 }
 
+HittableList createWorld() {
+  HittableList world;
+
+  auto groundMat = std::make_shared<Lambertian>(Vec3{0.8, 0.8, 0});
+  auto centerMat = std::make_shared<Lambertian>(Vec3{0.7, 0.3, 0.3});
+  auto leftMat = std::make_shared<Metal>(Vec3{0.8, 0.8, 0.8});
+  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2});
+
+  auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
+  auto centerSphere = std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5, centerMat);
+  auto leftSphere = std::make_shared<Sphere>(Vec3{-1, 0, -1}, 0.5, leftMat);
+  auto rightSphere = std::make_shared<Sphere>(Vec3{1, 0, -1}, 0.5, rightMat);
+
+  world.add(groundSphere);
+  world.add(centerSphere);
+  world.add(leftSphere);
+  world.add(rightSphere);
+
+  return world;
+}
 
 int main(int argc, char *argv[]) {
   // Image
@@ -48,9 +80,7 @@ int main(int argc, char *argv[]) {
   unsigned char pixels[imageWidth * imageHeight * numChannels];
 
   // World
-  HittableList world;
-  world.add(std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5));
-  world.add(std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100));
+  auto world = createWorld();
 
   // Camera
   Camera cam;

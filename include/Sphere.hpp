@@ -11,7 +11,9 @@ class Sphere : public Hittable {
   const std::shared_ptr<Material> &material = mat;
 
   Sphere();
-  Sphere(Vec3 center, double radius, std::shared_ptr<Material> material);
+  Sphere(
+    const Vec3 &center, const double radius, const std::shared_ptr<Material> material
+  );
 
   virtual HitRecord raycast(const Ray &r, const double tMin, const double tMax) const override;
 

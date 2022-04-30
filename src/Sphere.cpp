@@ -2,8 +2,9 @@
 #include <memory>
 
 Sphere::Sphere() = default;
-Sphere::Sphere(Vec3 center, double radius, std::shared_ptr<Material> material)
-  : cen{center}, rad{radius}, mat{material} {}
+Sphere::Sphere(
+  const Vec3 &center, const double radius, const std::shared_ptr<Material> material
+) : cen{center}, rad{radius}, mat{material} {}
 
 HitRecord Sphere::raycast(const Ray &r, const double tMin, const double tMax) const {
   HitRecord record;
