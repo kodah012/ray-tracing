@@ -20,9 +20,10 @@
 #include <filesystem>
 
 Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
+  Vec3 black = Vec3::ZERO;
+
   // If exceeded ray bounce limit, no more light is gathered
   if (depth <= 0) {
-    Vec3 black{0, 0, 0};
     return black;
   }
 
@@ -38,7 +39,7 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
         attenuation.z * colorResult.z
       };
     }
-    return Vec3::ZERO;
+    return black;
   }
 
   Vec3 white{1, 1, 1};
@@ -53,8 +54,8 @@ HittableList createWorld() {
 
   auto groundMat = std::make_shared<Lambertian>(Vec3{0.8, 0.8, 0});
   auto centerMat = std::make_shared<Lambertian>(Vec3{0.7, 0.3, 0.3});
-  auto leftMat = std::make_shared<Metal>(Vec3{0.8, 0.8, 0.8});
-  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2});
+  auto leftMat = std::make_shared<Metal>(Vec3{0.8, 0.8, 0.8}, 0.3);
+  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2}, 1);
 
   auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
   auto centerSphere = std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5, centerMat);
