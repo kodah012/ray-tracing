@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Material.hpp"
-#include "Utils.hpp"
 
 class Dielectric : public Material {
  public:
