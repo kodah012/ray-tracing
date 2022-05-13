@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Material.hpp"
+#include "Utils.hpp"
 
 class Dielectric : public Material {
  public:
@@ -26,11 +27,11 @@ class Dielectric : public Material {
     bool canRefract = (refractIndexFrom/refractIndexTo) * sinTheta <= 1;
 
     Vec3 rayOutDir;
-    if (canRefract) {
-      rayOutDir = rayInDir.refracted(record.faceNormal, refractIndexFrom, refractIndexTo);
+    if (!canRefract || reflectance(cosTheta, refractIndexFrom, refractIndexTo) > Math::randomDouble()) {
+      rayOutDir = rayInDir.reflected(record.faceNormal);
     }
     else {
-      rayOutDir = rayInDir.reflected(record.faceNormal);
+      rayOutDir = rayInDir.refracted(record.faceNormal, refractIndexFrom, refractIndexTo);
     }
 
     attenuation = Vec3{1, 1, 1}; // 1 because glass surface does not absorb anything
@@ -40,4 +41,12 @@ class Dielectric : public Material {
 
  private:
   double refractIndex;
+
+  static double reflectance(double cosTheta, double refractIndexFrom, double refractIndexTo) {
+    // Use Schlick's approximation for reflectance
+    double refractIndexRatio = refractIndexFrom / refractIndexTo;
+    auto r0 = (1-refractIndexRatio) / (1+refractIndexRatio);
+    r0 *= r0;
+    return r0 + (1-r0)*pow(1-cosTheta, 5);
+  }
 };
