@@ -74,6 +74,14 @@ Vec3 Vec3::reflected(const Vec3 &normal) const {
   return v - 2*v.dot(normal)*normal;
 }
 
+Vec3 Vec3::refracted(const Vec3 &normal, double refractIndexFrom, double refractIndexTo) const {
+  auto &rayIn = *this;
+  auto cosTheta = fmin((-rayIn).dot(normal), 1);
+  Vec3 rayOutPerp = (refractIndexFrom / refractIndexTo) * (rayIn + cosTheta*normal);
+  Vec3 rayOutParallel = -sqrt(fabs(1 - rayOutPerp.lengthSq())) * normal;
+  return rayOutPerp + rayOutParallel;
+}
+
 bool Vec3::approxEquals(const Vec3 &v, double error) const {
   bool xApproxEqual = std::abs(x - v.x) <= error;
   bool yApproxEqual = std::abs(y - v.y) <= error;

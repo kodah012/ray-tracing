@@ -36,6 +36,7 @@ class Vec3 {
   Vec3 normalized() const;
   Vec3 lerp(const Vec3 &target, const double t) const;
   Vec3 reflected(const Vec3 &normal) const;
+  Vec3 refracted(const Vec3 &normal, double refractIndexFrom, double refractIndexTo) const;
   bool approxEquals(const Vec3 &v, double error = 0.0001) const;
 
   Vec3 &operator=(const Vec3 &v);

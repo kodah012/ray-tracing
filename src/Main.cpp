@@ -15,6 +15,7 @@
 #include "materials/Material.hpp"
 #include "materials/Lambertian.hpp"
 #include "materials/Metal.hpp"
+#include "materials/Dielectric.hpp"
 
 #include <iostream>
 #include <filesystem>
@@ -53,8 +54,8 @@ HittableList createWorld() {
   HittableList world;
 
   auto groundMat = std::make_shared<Lambertian>(Vec3{0.8, 0.8, 0});
-  auto centerMat = std::make_shared<Lambertian>(Vec3{0.7, 0.3, 0.3});
-  auto leftMat = std::make_shared<Metal>(Vec3{0.8, 0.8, 0.8}, 0.3);
+  auto centerMat = std::make_shared<Dielectric>(1.5);
+  auto leftMat = std::make_shared<Dielectric>(1.5);
   auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2}, 1);
 
   auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
