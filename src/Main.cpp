@@ -61,11 +61,13 @@ HittableList createWorld() {
   auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
   auto centerSphere = std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5, centerMat);
   auto leftSphere = std::make_shared<Sphere>(Vec3{-1, 0, -1}, 0.5, leftMat);
+  auto leftInnerSphere = std::make_shared<Sphere>(Vec3{-1, 0, -1}, -0.4, leftMat);
   auto rightSphere = std::make_shared<Sphere>(Vec3{1, 0, -1}, 0.5, rightMat);
 
   world.add(groundSphere);
   world.add(centerSphere);
   world.add(leftSphere);
+  world.add(leftInnerSphere);
   world.add(rightSphere);
 
   return world;
