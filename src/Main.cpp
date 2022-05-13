@@ -54,9 +54,9 @@ HittableList createWorld() {
   HittableList world;
 
   auto groundMat = std::make_shared<Lambertian>(Vec3{0.8, 0.8, 0});
-  auto centerMat = std::make_shared<Dielectric>(1.5);
+  auto centerMat = std::make_shared<Lambertian>(Vec3{0.1, 0.2, 0.5});
   auto leftMat = std::make_shared<Dielectric>(1.5);
-  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2}, 1);
+  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2}, 0);
 
   auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
   auto centerSphere = std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5, centerMat);

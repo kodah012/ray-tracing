@@ -20,11 +20,21 @@ class Dielectric : public Material {
       refractIndexTo = 1;
     }
 
-    Vec3 unitDirection = rayIn.direction.normalized();
-    Vec3 refracted = unitDirection.refracted(record.faceNormal, refractIndexFrom, refractIndexTo);
+    Vec3 rayInDir = rayIn.direction.normalized();
+    double cosTheta = fmin((-rayInDir).dot(record.faceNormal), 1);
+    double sinTheta = sqrt(1.0 - cosTheta*cosTheta);
+    bool canRefract = (refractIndexFrom/refractIndexTo) * sinTheta <= 1;
 
-    attenuation = Vec3{1, 1, 1};
-    rayOut = Ray{record.hitPoint, refracted};
+    Vec3 rayOutDir;
+    if (canRefract) {
+      rayOutDir = rayInDir.refracted(record.faceNormal, refractIndexFrom, refractIndexTo);
+    }
+    else {
+      rayOutDir = rayInDir.reflected(record.faceNormal);
+    }
+
+    attenuation = Vec3{1, 1, 1}; // 1 because glass surface does not absorb anything
+    rayOut = Ray{record.hitPoint, rayOutDir};
     return true;
   }
 
