@@ -53,21 +53,14 @@ Vec3 colorFromRay(const Ray &r, const Hittable &world, int depth) {
 HittableList createWorld() {
   HittableList world;
 
-  auto groundMat = std::make_shared<Lambertian>(Vec3{0.8, 0.8, 0});
-  auto centerMat = std::make_shared<Lambertian>(Vec3{0.1, 0.2, 0.5});
-  auto leftMat = std::make_shared<Dielectric>(1.5);
-  auto rightMat = std::make_shared<Metal>(Vec3{0.8, 0.6, 0.2}, 0);
+  auto leftMat = std::make_shared<Lambertian>(Vec3{0,0,1});
+  auto rightMat = std::make_shared<Lambertian>(Vec3{1,0,0});
 
-  auto groundSphere = std::make_shared<Sphere>(Vec3{0, -100.5, -1}, 100, groundMat);
-  auto centerSphere = std::make_shared<Sphere>(Vec3{0, 0, -1}, 0.5, centerMat);
-  auto leftSphere = std::make_shared<Sphere>(Vec3{-1, 0, -1}, 0.5, leftMat);
-  auto leftInnerSphere = std::make_shared<Sphere>(Vec3{-1, 0, -1}, -0.4, leftMat);
-  auto rightSphere = std::make_shared<Sphere>(Vec3{1, 0, -1}, 0.5, rightMat);
+  double radius = cos(Math::pi / 4);
+  auto leftSphere = std::make_shared<Sphere>(Vec3{-radius, 0, -1}, radius, leftMat);
+  auto rightSphere = std::make_shared<Sphere>(Vec3{radius, 0, -1}, radius, rightMat);
 
-  world.add(groundSphere);
-  world.add(centerSphere);
   world.add(leftSphere);
-  world.add(leftInnerSphere);
   world.add(rightSphere);
 
   return world;
@@ -87,7 +80,7 @@ int main(int argc, char *argv[]) {
   auto world = createWorld();
 
   // Camera
-  Camera cam;
+  Camera cam{90, aspectRatio};
   
   // Render
   int i = 0;

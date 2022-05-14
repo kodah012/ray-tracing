@@ -5,7 +5,7 @@
 
 class Camera {
  public:
-  Camera();
+  Camera(double verticalFov, double aspectRatio);
   
   Ray rayFromViewportPoint(const double u, const double v) const;
  
