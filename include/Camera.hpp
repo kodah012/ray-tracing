@@ -5,7 +5,10 @@
 
 class Camera {
  public:
-  Camera(double verticalFov, double aspectRatio);
+  Camera(
+    const Vec3 &lookFrom, const Vec3 &lookAt, const Vec3 &viewUp,
+    double verticalFov, double aspectRatio
+  );
   
   Ray rayFromViewportPoint(const double u, const double v) const;
  

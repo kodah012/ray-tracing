@@ -1,22 +1,26 @@
 #include "Camera.hpp"
 #include "Utils.hpp"
 
-Camera::Camera(double verticalFov, double aspectRatio) {
+Camera::Camera(
+  const Vec3 &lookFrom, const Vec3 &lookAt, const Vec3 &viewUp,
+  double verticalFov, double aspectRatio
+) {
   double theta = Math::degreesToRadians(verticalFov);
   double h = tan(theta/2);
   double viewportHeight = 2 * h;
   double viewportWidth = aspectRatio * viewportHeight;
-  double focalLength = 1.0;
 
-  origin = Vec3::ZERO;
-  viewportHorizontal = Vec3{viewportWidth, 0, 0};
-  viewportVertical = Vec3{0, viewportHeight, 0};
+  Vec3 camBackward = (lookFrom - lookAt).normalized();
+  Vec3 camRight = viewUp.cross(camBackward).normalized();
+  Vec3 camUp = camBackward.cross(camRight);
 
-  Vec3 viewportCenter = origin - Vec3{0, 0, focalLength};
-  viewportBottomLeft = viewportCenter - viewportHorizontal/2 - viewportVertical/2;
+  origin = lookFrom;
+  viewportHorizontal = viewportWidth * camRight;
+  viewportVertical = viewportHeight * camUp;
+  viewportBottomLeft = origin - viewportHorizontal/2 - viewportVertical/2 - camBackward;
 }
 
 Ray Camera::rayFromViewportPoint(const double u, const double v) const {
-  auto rayDirection = viewportBottomLeft + u*viewportHorizontal + v*viewportVertical;
+  Vec3 rayDirection = viewportBottomLeft + u*viewportHorizontal + v*viewportVertical - origin;
   return Ray{origin, rayDirection};
 }
